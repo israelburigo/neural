@@ -65,6 +65,7 @@ namespace RedeNeural.Models
             });
         }
 
+
         private void BackPropagation()
         {
             var syns = Synapses.Where(p => Outputs.Any(q => q == p.Dest)).ToList();
