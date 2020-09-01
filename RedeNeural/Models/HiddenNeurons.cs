@@ -9,5 +9,11 @@ namespace RedeNeural.Models
     public class HiddenNeurons : List<Neuron>
     {
         public int Seq { get; set; }
+
+        public HiddenNeurons(int qNeurons)
+        {
+            while (qNeurons-- > 0)
+                Add(new Neuron());
+        }
     }
 }

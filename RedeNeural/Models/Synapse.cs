@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 namespace RedeNeural.Models
 {
     public class Synapse
-    {   
+    {
+        public int Id { get; set; }
         public Neuron Orig { get; set; }
         public Neuron Dest { get; set; }
         public float Weight { get; set; }

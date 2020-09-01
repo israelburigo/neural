@@ -7,64 +7,80 @@ using System.Threading.Tasks;
 
 namespace RedeNeural.Models
 {
+    public enum EnumActivation
+    {
+        Relu,
+        Sigmoid,
+        Value
+    }
+
     public class NeuralNetwork
     {
         public List<Neuron> Inputs { get; set; }
         public List<HiddenNeurons> Hiddens { get; set; }
         public List<Neuron> Outputs { get; set; }
-
         public List<Synapse> Synapses { get; set; }
-
         public float LearningRate { get; set; }
+        public EnumActivation ActivationType { get; set; }
 
-        public NeuralNetwork()
+        private readonly Random _rand;
+
+        public NeuralNetwork(Random r)
         {
-            LearningRate = 0.1f;
+            _rand = r;
+            ActivationType = EnumActivation.Relu;
+            LearningRate = 0.05f;
+            Inputs = new List<Neuron>();
+            Hiddens = new List<HiddenNeurons>();
+            Outputs = new List<Neuron>();
         }
 
         public void Train()
         {
             FeedForward();
-            BackPropagation();
+            //BackPropagation();
         }
 
-        public void BuildSynapses()
+        public List<Synapse> BuildSynapses()
         {
             Synapses = new List<Synapse>();
+
+            var seq = 0;
+            Hiddens.ForEach(p => p.Seq = ++seq);
 
             var hiddens = Hiddens.OrderBy(p => p.Seq).ToList();
 
             var orig = Inputs.ToList();
 
+            var id = 0;
             foreach (var h in hiddens)
             {
                 var dest = h;
-                Build(orig, dest);
+                Build(orig, dest, ref id);
                 orig = dest;
             }
 
-            Build(orig, Outputs);
+            Build(orig, Outputs, ref id);
+
+            return Synapses;
         }
 
-        private void Build(List<Neuron> orig, List<Neuron> dest)
+        private void Build(List<Neuron> orig, List<Neuron> dest, ref int id)
         {
-            orig.ForEach(o =>
+            foreach (var o in orig)
             {
-                //weights
-                var value = 1 / dest.Count;
-
-                dest.ForEach(d =>
+                foreach (var d in dest)
                 {
                     Synapses.Add(new Synapse
                     {
+                        Id = ++id,
                         Orig = o,
                         Dest = d,
-                        Weight = value
+                        Weight = (float)_rand.NextDouble()
                     });
-                });
-            });
+                }
+            }
         }
-
 
         private void BackPropagation()
         {
@@ -87,8 +103,14 @@ namespace RedeNeural.Models
                 Error = (float)Math.Pow(p.Value - p.Expected, 2) / 2
             });
 
-         
+            syns.ForEach(p =>
+            {
+                var grad = LearningRate
+                           * errorDests.First(q => q.Neuron == p.Dest).Error
+                           * dActivation(p.Orig.Value);
 
+                p.Weight -= grad;
+            });
         }
 
         private void FeedForward()
@@ -108,19 +130,41 @@ namespace RedeNeural.Models
             foreach (var synAg in syns.GroupBy(p => p.Dest))
             {
                 var value = synAg.Sum(p => p.Weight * p.Orig.Value) + synAg.Key.Bias;
-                synAg.Key.Value = Sigmoid(value);
+                synAg.Key.Value = Activation(value);
             }
         }
 
-        public float dSigmoid(float value)
+        private float dActivation(float value)
         {
-            return value * (1 - value);
+            switch (ActivationType)
+            {
+                case EnumActivation.Relu: return value < 0 ? 0 : 1;
+                case EnumActivation.Sigmoid: return value * (1 - value);
+                default: return value;
+            }
         }
 
-        public float Sigmoid(float value)
+        private float Activation(float value)
         {
-            return (float)(1 / (1 + Math.Pow(Math.E, -value)));
+            switch (ActivationType)
+            {
+                case EnumActivation.Relu: return value < 0 ? 0 : value;
+                case EnumActivation.Sigmoid: return (float)(1 / (1 + Math.Pow(Math.E, -value)));
+                default: return value;
+            }
         }
+
+        public void SetInput(int id, float value)
+        {
+            Inputs.Find(p => p.Id == id).Value = value;
+        }
+
+        public float GetOutput(int id)
+        {
+            return Outputs.Find(p => p.Id == id).Value;
+        }
+
+
     }
 }
 
