@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.SymbolStore;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -35,10 +36,14 @@ namespace RedeNeural.Models
             Outputs = new List<Neuron>();
         }
 
-        public void Train()
+        public void CalculateOutputs()
         {
             FeedForward();
-            //BackPropagation();
+        }
+
+        public void RecalculateSynapses()
+        {
+            BackPropagation();
         }
 
         public List<Synapse> BuildSynapses()
@@ -76,7 +81,7 @@ namespace RedeNeural.Models
                         Id = ++id,
                         Orig = o,
                         Dest = d,
-                        Weight = (float)_rand.NextDouble()
+                        Weight = (float)_rand.NextDouble() * 2 - 1
                     });
                 }
             }
@@ -84,33 +89,13 @@ namespace RedeNeural.Models
 
         private void BackPropagation()
         {
-            var syns = Synapses.Where(p => Outputs.Any(q => q == p.Dest)).ToList();
+            var totalError = Outputs.Sum(p => p.Error);
 
-            RecalculateSynapses(syns, Outputs);
-
-            foreach (var hiddens in Hiddens.OrderByDescending(p => p.Seq))
-            {
-                syns = Synapses.Where(p => hiddens.Any(q => q == p.Dest)).ToList();
-                RecalculateSynapses(syns, hiddens);
-            }
         }
 
-        private void RecalculateSynapses(List<Synapse> syns, List<Neuron> dests)
+        public float Cost()
         {
-            var errorDests = dests.Select(p => new
-            {
-                Neuron = p,
-                Error = (float)Math.Pow(p.Value - p.Expected, 2) / 2
-            });
-
-            syns.ForEach(p =>
-            {
-                var grad = LearningRate
-                           * errorDests.First(q => q.Neuron == p.Dest).Error
-                           * dActivation(p.Orig.Value);
-
-                p.Weight -= grad;
-            });
+            return Outputs.Sum(p => (float)Math.Pow(p.Value - p.Expected, 2));
         }
 
         private void FeedForward()
@@ -130,7 +115,9 @@ namespace RedeNeural.Models
             foreach (var synAg in syns.GroupBy(p => p.Dest))
             {
                 var value = synAg.Sum(p => p.Weight * p.Orig.Value) + synAg.Key.Bias;
+                synAg.Key.NetValue = value;
                 synAg.Key.Value = Activation(value);
+                synAg.Key.Error = (float)Math.Pow(synAg.Key.Expected - synAg.Key.Value, 2) / 2;
             }
         }
 

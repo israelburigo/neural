@@ -12,6 +12,8 @@ namespace RedeNeural.Models
         public float Expected { get; set; }
 
         public float Value { get; set; }
+        public float NetValue { get; set; }
         public float Bias { get; set; }
+        public float Error { get; set; }
     }
 }
