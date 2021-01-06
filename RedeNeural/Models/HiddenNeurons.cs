@@ -15,5 +15,9 @@ namespace RedeNeural.Models
             while (qNeurons-- > 0)
                 Add(new Neuron());
         }
+
+        public HiddenNeurons()
+        {
+        }
     }
 }

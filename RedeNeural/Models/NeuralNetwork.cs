@@ -15,7 +15,7 @@ namespace RedeNeural.Models
         Value
     }
 
-    public class NeuralNetwork
+    public partial class NeuralNetwork
     {
         public List<Neuron> Inputs { get; set; }
         public List<HiddenNeurons> Hiddens { get; set; }
@@ -53,7 +53,7 @@ namespace RedeNeural.Models
             var seq = 0;
             Hiddens.ForEach(p => p.Seq = ++seq);
 
-            var hiddens = Hiddens.OrderBy(p => p.Seq).ToList();
+            var hiddens = Hiddens.OrderBy(p => p.Seq);
 
             var orig = Inputs.ToList();
 
@@ -68,6 +68,16 @@ namespace RedeNeural.Models
             Build(orig, Outputs, ref id);
 
             return Synapses;
+        }
+
+        public void SetInput(int id, float value)
+        {
+            Inputs.Find(p => p.Id == id).Value = value;
+        }
+
+        public float GetOutput(int id)
+        {
+            return Outputs.Find(p => p.Id == id).Value;
         }
 
         private void Build(List<Neuron> orig, List<Neuron> dest, ref int id)
@@ -87,45 +97,11 @@ namespace RedeNeural.Models
             }
         }
 
-        private void BackPropagation()
-        {
-            var totalError = Outputs.Sum(p => p.Error);
-
-        }
-
-        public float Cost()
-        {
-            return Outputs.Sum(p => (float)Math.Pow(p.Value - p.Expected, 2));
-        }
-
-        private void FeedForward()
-        {
-            var syns = Synapses.Where(p => Inputs.Any(q => q == p.Orig)).ToList();
-            CalculateNeuron(syns);
-
-            foreach (var hiddens in Hiddens.OrderBy(p => p.Seq))
-            {
-                syns = Synapses.Where(p => hiddens.Any(q => q == p.Orig)).ToList();
-                CalculateNeuron(syns);
-            }
-        }
-
-        private void CalculateNeuron(List<Synapse> syns)
-        {
-            foreach (var synAg in syns.GroupBy(p => p.Dest))
-            {
-                var value = synAg.Sum(p => p.Weight * p.Orig.Value) + synAg.Key.Bias;
-                synAg.Key.NetValue = value;
-                synAg.Key.Value = Activation(value);
-                synAg.Key.Error = (float)Math.Pow(synAg.Key.Expected - synAg.Key.Value, 2) / 2;
-            }
-        }
-
         private float dActivation(float value)
         {
             switch (ActivationType)
             {
-                case EnumActivation.Relu: return value < 0 ? 0 : 1;
+                case EnumActivation.Relu: return value > 0 ? 1 : 0;
                 case EnumActivation.Sigmoid: return value * (1 - value);
                 default: return value;
             }
@@ -140,17 +116,6 @@ namespace RedeNeural.Models
                 default: return value;
             }
         }
-
-        public void SetInput(int id, float value)
-        {
-            Inputs.Find(p => p.Id == id).Value = value;
-        }
-
-        public float GetOutput(int id)
-        {
-            return Outputs.Find(p => p.Id == id).Value;
-        }
-
 
     }
 }

@@ -5,7 +5,7 @@ VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Neural", "RedeNeural\Neural.csproj", "{E4AACD91-01FC-450B-83BC-E91C1F40ABAE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game1", "Game1\Game1.csproj", "{EE90C879-13F0-4958-89F0-6C242D5F42CA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game1", "..\Game1\Game1.csproj", "{EE90C879-13F0-4958-89F0-6C242D5F42CA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
