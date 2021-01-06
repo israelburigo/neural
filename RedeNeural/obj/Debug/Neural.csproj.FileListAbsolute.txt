@@ -1,0 +1,5 @@
+D:\ISRAEL\Neural\neural\RedeNeural\bin\Debug\RedeNeural.dll
+D:\ISRAEL\Neural\neural\RedeNeural\bin\Debug\RedeNeural.pdb
+D:\ISRAEL\Neural\neural\RedeNeural\obj\Debug\Neural.csprojResolveAssemblyReference.cache
+D:\ISRAEL\Neural\neural\RedeNeural\obj\Debug\RedeNeural.dll
+D:\ISRAEL\Neural\neural\RedeNeural\obj\Debug\RedeNeural.pdb

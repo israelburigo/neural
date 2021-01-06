@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>RedeNeural</RootNamespace>
     <AssemblyName>RedeNeural</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -42,8 +42,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\HiddenNeurons.cs" />
-    <Compile Include="Models\Matrix.cs" />
     <Compile Include="Models\NeuralNetwork.cs" />
+    <Compile Include="Models\NeuralNetwork.BackPropagation.cs" />
+    <Compile Include="Models\NeuralNetwork.FeedForward.cs" />
     <Compile Include="Models\Neuron.cs" />
     <Compile Include="Models\Synapse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
