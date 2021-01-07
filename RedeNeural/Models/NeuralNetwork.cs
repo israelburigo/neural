@@ -36,13 +36,9 @@ namespace RedeNeural.Models
             Outputs = new List<Neuron>();
         }
 
-        public void CalculateOutputs()
+        public void Train()
         {
             FeedForward();
-        }
-
-        public void RecalculateSynapses()
-        {
             BackPropagation();
         }
 
@@ -75,9 +71,9 @@ namespace RedeNeural.Models
             Inputs.Find(p => p.Id == id).Value = value;
         }
 
-        public float GetOutput(int id)
+        public Neuron GetOutput(int id)
         {
-            return Outputs.Find(p => p.Id == id).Value;
+            return Outputs.Find(p => p.Id == id);
         }
 
         private void Build(List<Neuron> orig, List<Neuron> dest, ref int id)
