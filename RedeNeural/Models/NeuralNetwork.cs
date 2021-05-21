@@ -15,6 +15,7 @@ namespace RedeNeural.Models
         Value
     }
 
+    [Serializable]
     public partial class NeuralNetwork
     {
         public List<Neuron> Inputs { get; set; }
@@ -66,14 +67,14 @@ namespace RedeNeural.Models
             return Synapses;
         }
 
-        public void SetInput(int id, float value)
+        public void SetInput(string tag, float value)
         {
-            Inputs.Find(p => p.Id == id).Value = value;
+            Inputs.Find(p => p.Tag == tag).Value = value;
         }
 
-        public Neuron GetOutput(int id)
+        public Neuron GetOutput(string tag)
         {
-            return Outputs.Find(p => p.Id == id);
+            return Outputs.Find(p => p.Tag == tag);
         }
 
         private void Build(List<Neuron> orig, List<Neuron> dest, ref int id)

@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30621.155
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Neural", "RedeNeural\Neural.csproj", "{E4AACD91-01FC-450B-83BC-E91C1F40ABAE}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game1", "..\Game1\Game1.csproj", "{EE90C879-13F0-4958-89F0-6C242D5F42CA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,12 +15,11 @@ Global
 		{E4AACD91-01FC-450B-83BC-E91C1F40ABAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4AACD91-01FC-450B-83BC-E91C1F40ABAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E4AACD91-01FC-450B-83BC-E91C1F40ABAE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EE90C879-13F0-4958-89F0-6C242D5F42CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EE90C879-13F0-4958-89F0-6C242D5F42CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EE90C879-13F0-4958-89F0-6C242D5F42CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EE90C879-13F0-4958-89F0-6C242D5F42CA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EC8D3F18-F920-47E5-8009-01F49AF80BF2}
 	EndGlobalSection
 EndGlobal

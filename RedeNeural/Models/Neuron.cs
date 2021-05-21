@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace RedeNeural.Models
 {
+    [Serializable]
     public class Neuron
     {
-        public int Id { get; set; }
+        public string Tag { get; set; }
         public float Expected { get; set; }
 
         public float Value { get; set; }

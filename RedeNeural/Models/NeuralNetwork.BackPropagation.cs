@@ -9,7 +9,7 @@ namespace RedeNeural.Models
 {
     public partial class NeuralNetwork
     {
-        private void BackPropagation()
+        public void BackPropagation()
         {
             CalculateSynapse(Outputs);
 
