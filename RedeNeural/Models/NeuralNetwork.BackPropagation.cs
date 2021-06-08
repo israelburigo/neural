@@ -11,6 +11,8 @@ namespace RedeNeural.Models
     {
         public void BackPropagation()
         {
+            CalculateErrors();
+
             CalculateSynapse(Outputs);
 
             foreach (var hiddens in Hiddens.OrderByDescending(p => p.Seq))
@@ -24,6 +26,23 @@ namespace RedeNeural.Models
                 var dEdW = syn.Dest.Error * dActivation(syn.Dest.Value) * syn.Orig.Value;
                 syn.Weight = syn.Weight - LearningRate * dEdW;
             }
+        }
+
+        private void CalculateErrors()
+        {
+            Outputs.ForEach(p =>
+            {
+                p.Error = p.Value - p.Expected;
+            });
+
+            CalculateHiddenErrors();
+        }
+
+        private void CalculateHiddenErrors()
+        {
+            foreach (var hiddens in Hiddens.OrderByDescending(p => p.Seq))
+                foreach (var neuron in hiddens)
+                    neuron.Error = Synapses.Where(p => p.Orig == neuron).Sum(p => p.Dest.Error * dActivation(p.Dest.Value) * p.Weight);
         }
 
     }
